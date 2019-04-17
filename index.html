@@ -1,0 +1,58 @@
+<!DOCTYPE HTML>
+<html lang="es_MX">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+
+    <title>IO Cost</title>
+    <link rel="shortcut icon" href="img/wink.ico" />
+    <link rel="stylesheet" type="text/css" href="css/principal.css">
+    <link rel="stylesheet" type="text/css" href="css/tablas.css">
+    <script type="text/javascript" src="js/general.js"></script>
+</head>
+
+<body>
+<input type="file" id="showPlan"><br>
+<label for="editor"></label><textarea rows="10" cols="100" id="editor"></textarea>
+<br>
+<p id="datosArchivo"></p>
+<p id="costeTotal"></p>
+
+<div id="table_dis">
+    <button onclick="exportTableToCSV()">Guardar tabla como CSV</button>
+</div>
+<div>
+    <table id = "tabla" ></table>
+</div>
+
+<div id="info_dis">
+    <h2>
+        Instrucciones:
+    </h2>
+    <ul>
+        <li>
+            Antes de la ejecución de cualquier proceso ejecutar la instrucción: <kbd>set showplan on</kbd>
+        </li>
+        <li>
+            Copiar lo mostrado en el «Show Log», si no esta activado o no se ve, utilizar <kbd>Alt+2</kbd>
+        </li>
+        <li>
+            Guardar el texto copiado en un archivo «txt», ese archivo es el que se debe de cargar.
+        </li>
+    </ul>
+    <h2>
+        ¿Qué significa I/O cost? (El Costo Estimado de I/O o Costo Estimado de CPU)
+    </h2>
+    <p>
+        El analizador de consultas crea muchos planes de ejecución, calcula el costo de cada uno (cuántos recursos de I/O y procesador son necesarios para completar la operación) y determina el más eficiente.
+    </p>
+</div>
+
+</body>
+<footer>
+    <p>Dudas y sugerencias<br>
+        Jonathan Nicio  Ext. 3360 <br>
+        <a href="mailto:jonathan.nicio@banregio.com">
+            jonathan.nicio@banregio.com</a>
+    </p>
+</footer>
+</html>

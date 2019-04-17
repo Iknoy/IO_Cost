@@ -2,7 +2,6 @@ window.addEventListener('load', inicio, false);
 
 var filename = '';
 
-
 function inicio() {
     document.getElementById('showPlan').addEventListener('change', cargar, false);
     document.getElementById('table_dis').style.display = 'none';
@@ -111,16 +110,18 @@ function leer(ev) {
         var tempFscan = '';
         var tempLinea = '<td id="linea">' + ios[i][0] + '</td>';
         var tempIOcos = parseInt(ios[i][1],10);
+        var tempIOcosFormat;
+        var tempIONum;
 
         if (tempIOcos >= 1000000){
-            var tempIOcosFormat = tempIOcos.toLocaleString('es-MX');
-            var tempIONum = '<td id="ioMay">' + tempIOcosFormat + '</td>';
+            tempIOcosFormat = tempIOcos.toLocaleString('es-MX');
+            tempIONum= '<td id="ioMay">' + tempIOcosFormat + '</td>';
         }else if (tempIOcos >= 500000 && tempIOcos < 1000000){
-            var tempIOcosFormat = tempIOcos.toLocaleString('es-MX');
-            var tempIONum = '<td id="ioMen">' + tempIOcosFormat + '</td>';
+            tempIOcosFormat = tempIOcos.toLocaleString('es-MX');
+            tempIONum = '<td id="ioMen">' + tempIOcosFormat + '</td>';
         }else {
-            var tempIOcosFormat = tempIOcos.toLocaleString('es-MX');
-            var tempIONum = '<td id="ioNor">' + tempIOcosFormat + '</td>';
+            tempIOcosFormat = tempIOcos.toLocaleString('es-MX');
+            tempIONum = '<td id="ioNor">' + tempIOcosFormat + '</td>';
         }
 
         for(j=0; j<scan.length; j++){

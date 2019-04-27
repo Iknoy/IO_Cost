@@ -1,0 +1,32 @@
+header{
+    background: #1b1e21;
+    color: #e2e6ea;
+}
+
+footer{
+    background-color: #000a12;
+    color: #eeeeee;
+    bottom: 0;
+    position: relative;
+}
+
+a:link {
+    color: #ff7f3a;
+}
+
+a:hover {
+    color: #66D9EF;
+}
+
+.naranjaBR{
+    color: #ff7f3a;
+}
+
+.instrucciones{
+    background: #1b1e21;
+    color: #e2e6ea;
+}
+.significado{
+    background: #1b1e21;
+    color: #e2e6ea;
+}

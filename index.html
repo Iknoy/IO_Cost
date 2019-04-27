@@ -1,58 +1,128 @@
 <!DOCTYPE HTML>
 <html lang="es_MX">
 <head>
-    <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
-
+    <!--    <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />-->
+    <meta name="viewport" content="user-scalable=no, width=device-width, initial-scale=1">
     <title>IO Cost</title>
     <link rel="shortcut icon" href="img/wink.ico" />
-    <link rel="stylesheet" type="text/css" href="css/principal.css">
-    <link rel="stylesheet" type="text/css" href="css/tablas.css">
-    <script type="text/javascript" src="js/general.js"></script>
+    <link rel="stylesheet" type="text/css" href="css/estilos.css">
+    <link rel="stylesheet" href="css/bootstrap.min.css">
 </head>
 
-<body>
-<input type="file" id="showPlan"><br>
-<label for="editor"></label><textarea rows="10" cols="100" id="editor"></textarea>
-<br>
-<p id="datosArchivo"></p>
-<p id="costeTotal"></p>
-
-<div id="table_dis">
-    <button onclick="exportTableToCSV()">Guardar tabla como CSV</button>
-</div>
-<div>
-    <table id = "tabla" ></table>
-</div>
-
-<div id="info_dis">
-    <h2>
-        Instrucciones:
-    </h2>
-    <ul>
-        <li>
-            Antes de la ejecución de cualquier proceso ejecutar la instrucción: <kbd>set showplan on</kbd>
-        </li>
-        <li>
-            Copiar lo mostrado en el «Show Log», si no esta activado o no se ve, utilizar <kbd>Alt+2</kbd>
-        </li>
-        <li>
-            Guardar el texto copiado en un archivo «txt», ese archivo es el que se debe de cargar.
-        </li>
-    </ul>
-    <h2>
-        ¿Qué significa I/O cost? (El Costo Estimado de I/O o Costo Estimado de CPU)
-    </h2>
-    <p>
-        El analizador de consultas crea muchos planes de ejecución, calcula el costo de cada uno (cuántos recursos de I/O y procesador son necesarios para completar la operación) y determina el más eficiente.
-    </p>
+<body class="bg-dark text-white">
+<header>
+    <div class="container">
+        <h1 class="text-center ">
+            Analizador de I/O Cost
+        </h1>
+        <p class="naranjaBR" id="costeTotal">
+        </p>
+    </div>
+</header>
+<div class="container">
+    <div class="input-group mb-3">
+        <div class="input-group-prepend">
+            <span class="input-group-text bg-dark text-white" id="inputGroupFileAddon01">Showplan</span>
+        </div>
+        <div class="custom-file" lang="es_MX">
+            <input type="file" class="custom-file-input bg-secondary text-white" id="showPlan" aria-describedby="inputGroupFileAddon01" lang="es_MX">
+            <label class="custom-file-label" for="showPlan">Selecciona un archivo ...</label>
+        </div>
+    </div>
 </div>
 
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-sm-12 col-md-8 col-lg-9">
+            <div class="table-responsive">
+                <table class="table table-sm table-bordered table-striped table-dark table-hover" id = "tabla" >
+                </table>
+            </div>
+            <div id="table_dis">
+                <button class="btn btn-light align-content-center" onclick="exportTableToCSV()">Guardar tabla como CSV</button>
+            </div>
+        </div>
+        <div class="col-sm-12 col-md-4 col-lg-3">
+            <label for="editor" class="text-sm-right" id="datosArchivo">
+            </label>
+            <textarea class="form-control bg-dark text-white" rows="30" id="editor">
+            </textarea>
+        </div>
+    </div>
+</div>
+
+<div class="container" id="info_dis">
+    <div class="row">
+        <div class="instrucciones border border-light rounded col-sm-12 col-md-6 col-lg-6">
+            <h2 class="text-center">
+                Instrucciones
+            </h2>
+            <ul class="text-justify">
+                <li>
+                    Antes de la ejecución de cualquier proceso ejecutar la instrucción: <pre class="text-white-50">set showplan on</pre>
+                </li>
+                <li>
+                    También debera de estar activado el panel «Show Log», si no esta activado o no se ve, utilizar <code>Alt+2</code>
+                </li>
+                <li>
+                    Copiar todo lo mostrado en el «Show Log» seleccionando con click derecho y select all
+                </li>
+                <li>
+                    Guardar el texto copiado en un archivo «txt», ese archivo es el que se debe de cargar.
+                </li>
+            </ul>
+        </div>
+        <div class="significado border border-light rounded col-sm-12 col-md-6 col-lg-6">
+            <h2 class="text-center">
+                Glosario de términos.
+            </h2>
+            <p class="text-justify">
+                <h3>
+                    I/O cost:
+                </h3>
+                <p>
+                    In/Out (Entrada/Salida) Se refiere a los datos desde o hacía los discos y/u otros periféricos, es probablemente de los recursos más lentos. El «Costo Estimado de I/O» se encarga de recopilar los costes por parte de diferentes procesos que se aquí mismo se especificarán.
+                </p>
+                <h3>
+                    Table Scan:
+                </h3>
+                <p>
+                    El número total de páginas de datos en la tabla; si el proceso indica esta etiqueta significa que recorrerá toda la tabla para encontrar el elemento requerido en el proceso.
+                </p>
+                <h3>
+                    Clustered Index Scan:
+                </h3>
+                <p>
+                    El número de niveles en el índice más el número de páginas de datos a escanear
+                </p>
+                <h3>
+                    Non-Clustered index:
+                </h3>
+        </div>
+    </div>
+</div>
+
+<script src="js/jquery.js"></script>
+<script src="js/bootstrap.min.js"></script>
+<script type="text/javascript" src="js/general.js"></script>
 </body>
-<footer>
-    <p>Dudas y sugerencias<br>
-        Jonathan Nicio  Ext. 3360 <br>
-        <a href="mailto:jonathan.nicio@banregio.com">
-            jonathan.nicio@banregio.com</a>
-    </p>
+<footer class="card-footer">
+    <div class="container text-center">
+        <p>
+            <small>
+                Dudas y sugerencias
+            </small>
+            <br>
+            <small>
+                Jonathan Nicio  Ext. 3360
+            </small>
+            <br>
+            <a href="mailto:jonathan.nicio@banregio.com">
+                <small>
+                    jonathan.nicio@banregio.com
+                </small>
+            </a>
+        </p>
+    </div>
 </footer>
 </html>

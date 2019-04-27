@@ -11,7 +11,7 @@ function inicio() {
 function cargar(ev) {
     filename = ev.target.files[0].name;
     document.getElementById('datosArchivo').innerHTML	='Nombre del archivo: '+filename+'<br>'
-        +'Tamaño del archivo: '+ev.target.files[0].size+' bytes';
+        +'Tama\u00F1o del archivo: '+ev.target.files[0].size+' bytes';
 
     var arch = new FileReader();
     arch.addEventListener('load',leer,false);
@@ -35,7 +35,7 @@ function leer(ev) {
     var fscan = [];		// [Línea][Tabla][Indices]
     var ios = [];		// [Línea][I/O]
     var resulset = [];	// [Línea][I/O][Tabla Full scan][Tabla con indice][Indices]
-    var table = '<tr><th>Línea dentro del SP </th><th>Coste de I/O Estimado </th><th>Tablas Escaneadas</th><th>Escaneos con indices</th></tr>';
+    var table = '<tr class="text-center naranjaBR" ><th>L\u00EDnea dentro del SP </th><th>Coste de I/O Estimado </th><th>Tablas Escaneadas</th><th>Escaneos con \u00EDndices</th></tr>';
 
     for(i=0; i<array.length; i++){
         suma+=isNaN(parseInt(array[i]))?0:parseInt(array[i]);
@@ -108,20 +108,20 @@ function leer(ev) {
     for(i=0; i<ios.length; i++){
         var tempTscan = '';
         var tempFscan = '';
-        var tempLinea = '<td id="linea">' + ios[i][0] + '</td>';
+        var tempLinea = '<td class="text-info" id="linea">' + ios[i][0] + '</td>';
         var tempIOcos = parseInt(ios[i][1],10);
         var tempIOcosFormat;
         var tempIONum;
 
         if (tempIOcos >= 1000000){
             tempIOcosFormat = tempIOcos.toLocaleString('es-MX');
-            tempIONum= '<td id="ioMay">' + tempIOcosFormat + '</td>';
+            tempIONum= '<td class="text-danger">' + tempIOcosFormat + '</td>';
         }else if (tempIOcos >= 500000 && tempIOcos < 1000000){
             tempIOcosFormat = tempIOcos.toLocaleString('es-MX');
-            tempIONum = '<td id="ioMen">' + tempIOcosFormat + '</td>';
+            tempIONum = '<td class="text-warning">' + tempIOcosFormat + '</td>';
         }else {
             tempIOcosFormat = tempIOcos.toLocaleString('es-MX');
-            tempIONum = '<td id="ioNor">' + tempIOcosFormat + '</td>';
+            tempIONum = '<td>' + tempIOcosFormat + '</td>';
         }
 
         for(j=0; j<scan.length; j++){
@@ -129,15 +129,15 @@ function leer(ev) {
                 if (scan[j][1].indexOf('#')>=0){
                     tempTscan = '<td>' + scan[j][1] + '</td>';
                 }else{
-                    tempTscan = '<td id="tabScan">' + scan[j][1] + '</td>';
+                    tempTscan = '<td class="text-danger">' + scan[j][1] + '</td>';
                 }
             }
         }
         for(j=0; j<fscan.length; j++){
             if (ios[i][0] === fscan[j][0]){
-                tempFscan	= '<td id="interCell">Tabla' + fscan[j][1]
-                    + '<br>Indice: ' + fscan[j][2]
-                    + '<br>Llaves: ' + fscan[j][3] + '</td>';
+                tempFscan	= '<td class="text-monospace" id="interCell"><p class="font-weight-bold">Tabla: </p><p class="text-white-50">' + fscan[j][1]
+                    + '</p><p class="font-weight-bold">Indice: </p><p class="text-white-50">' + fscan[j][2]
+                    + '</p><p class="font-weight-bold">Llaves: </p><p class="text-white-50">' + fscan[j][3] + '</p></td>';
             }
         }
         resulset.push([tempLinea,tempIONum, tempTscan,tempFscan]);
@@ -158,7 +158,7 @@ function leer(ev) {
         table += '</tr>'
     }
     document.getElementById('editor').value=ev.target.result;
-    document.getElementById('costeTotal').innerHTML='<h1>' + '<b>Total estimated I/O cost: </b>' + suma.toLocaleString('es-MX') + '</h1>';
+    document.getElementById('costeTotal').innerHTML = ' <h2 class="text-center">' + '<b>Costo total estimado: </b><br><small>' + suma.toLocaleString('es-MX') + '</small></h2>';
     document.getElementById('tabla').innerHTML= table;
 }
 

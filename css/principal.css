@@ -1,7 +1,7 @@
 /*  Fondos  */
 
 body{
-    background-color: #272822;
+    background-color: #263238;
 }
 p{
     color: #eeeeee;
@@ -16,7 +16,7 @@ input{
 }
 
 textarea{
-    border: 1px solid #ff7f3a;
+
     background: #2D2D2D;
     color: #eeeeee;
     vertical-align: center;
@@ -24,16 +24,8 @@ textarea{
 }
 
 footer{
-    bottom: 0;
-    position: relative;
-    width: 100%;
-    background-color: #0F0E0F;
+    background-color: #000a12;
     color: #eeeeee;
-}
-
-footer > p{
-    text-align: center;
-    font-size:xx-small;
 }
 
 a:link {

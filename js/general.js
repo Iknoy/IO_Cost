@@ -1,11 +1,11 @@
-window.addEventListener('load', inicio, false);
+window.addEventListener('load', init, false);
 
-var filename = '';
+let filename = '';
 
-function inicio() {
+function init() {
     document.getElementById('showPlan').addEventListener('change', loadFile, false);
     document.getElementById('table_dis').style.display = 'none';
-    document.getElementById('editor').style.display = 'none';
+    document.getElementById('showPlanVisor').style.display = 'none';
 }
 
 function loadFile(ev) {
@@ -13,13 +13,13 @@ function loadFile(ev) {
     document.getElementById('dataFile').innerHTML	= 'Nombre del archivo: '+filename+'<br>'
                                                             + 'Tama\u00F1o del archivo: '+ev.target.files[0].size+' bytes';
 
-    let arch = new FileReader();
-    arch.addEventListener('load',readFile,false);
-    arch.readAsText(ev.target.files[0]);
+    let fileRead = new FileReader();
+    fileRead.addEventListener('load',readFile,false);
+    fileRead.readAsText(ev.target.files[0]);
 
     document.getElementById('info_dis').style.display = 'none';
     document.getElementById('table_dis').style.display = 'block';
-    document.getElementById('editor').style.display = 'block';
+    document.getElementById('showPlanVisor').style.display = 'block';
 }
 
 function readFile(ev) {
@@ -28,18 +28,16 @@ function readFile(ev) {
     const arrayIos = ev.target.result.split("Total estimated I/O cost for");
     let i, j, k;
     let l = 0;
-    let scanTable = [];		// [Línea][Tabla]
-    let scanIndex = [];		// [Línea][Tabla][Indices]
-    let costIO = [];		// [Línea][I/O]
-    let colAssembly = [];	// [Línea][I/O][Tabla Full scan][Tabla con indice][Indices]
-    let colHeaders   = '<tr class="text-center naranjaBR" >' +
+    let sumIO = 0;
+    let scanTable = [];		// [Line][Table]
+    let scanIndex = [];		// [Line][Table][Index]
+    let costIO = [];		// [Line][I/O]
+    let colAssembly = [];	// [Line][I/O][Full scan Table][Index Table]
+    let tableStructure   = '<tr class="text-center colorBR" >' +
                         '<th>L\u00EDnea dentro del SP </th>' +
                         '<th>Coste de I/O Estimado </th>' +
                         '<th>Tablas Escaneadas</th>' +
                         '<th>Escaneos con \u00EDndices</th></tr>';
-
-    let statement;
-    let sumIO = 0;
 
     //Sum of I/O Cost
     for(i=0; i<array.length; i++){
@@ -47,127 +45,133 @@ function readFile(ev) {
     }
     //I/O quantity per block
     for(k=1; k<arrayIos.length; k++){
-        statement = arrayIos[k].substring(arrayIos[k].indexOf('):'), arrayIos[k].indexOf('.')).replace('): ', '');
+        let statement = arrayIos[k].substring(arrayIos[k].indexOf('):'), arrayIos[k].indexOf('.')).replace('): ', '');
         if (parseInt(statement)>0){
-            var tempLine = arrayIos[k].substring(arrayIos[k].indexOf('at line'),arrayIos[k].indexOf('):')).replace('at line ','');
-            var tempIO = arrayIos[k].substring(arrayIos[k].indexOf('):'),arrayIos[k].indexOf('.')).replace('): ','');
+            let tempLine = arrayIos[k].substring(arrayIos[k].indexOf('at line'),arrayIos[k].indexOf('):')).replace('at line ','');
+            let tempIO = arrayIos[k].substring(arrayIos[k].indexOf('):'),arrayIos[k].indexOf('.')).replace('): ','');
             costIO.push([tempLine,tempIO]);
         }
     }
-    //Identificación de Tabla
+    // Detection of tables
     for(j=0; j<arrayScan.length; j++){
-        //Identificar Tabla Simple
+        // Detection of scanned tables
         if(arrayScan[j].indexOf('Table Scan.')>=0){
-            var linea = arrayScan[j].substring(arrayScan[j].indexOf('line '),arrayScan[j].indexOf(')')).replace('line ','');//linea
-            var arrayAux = arrayScan[j].split('FROM TABLE');
-            for(k=0; k<arrayAux.length; k++){
-                if(arrayAux[k].indexOf('Table Scan.')>=0){
+            let lineScanTab = arrayScan[j].substring(arrayScan[j].indexOf('line '),arrayScan[j].indexOf(')')).replace('line ','');//linea
+            let nameScanTab = arrayScan[j].split('FROM TABLE');
+            let tmpScanTab;
+            for(k=0; k<nameScanTab.length; k++){
+                if(nameScanTab[k].indexOf('Table Scan.')>=0){
                     l=0;
-                    while(arrayAux[k][l] === ' ' || arrayAux[k][l] === '|'){
+                    while(nameScanTab[k][l] === ' ' || nameScanTab[k][l] === '|'){
                         l++;
                     }
-                    var tempScan = arrayAux[k].substring(l,arrayAux[k].indexOf('Table Scan.')).replace(/\|/g,'');
-                    scanTable.push([linea, tempScan]);
+                    tmpScanTab = nameScanTab[k].substring(l,nameScanTab[k].indexOf('Table Scan.')).replace(/\|/g,'');
+                    scanTable.push([lineScanTab, tmpScanTab]);
                 }
             }
         }
-        //Identificar Tablas con Indices
+        // Detection of index tables
         else if(arrayScan[j].indexOf('Forward Scan.')>=0){
-            var lineaFW = arrayScan[j].substring(arrayScan[j].indexOf('line '),arrayScan[j].indexOf(')')).replace('line ','');//linea
-            var arrayFW = arrayScan[j].split('FROM TABLE');
-            for(k=0; k<arrayFW.length; k++){
-                if(arrayFW[k].indexOf('Forward Scan.')>=0){
+            let lineFwTab = arrayScan[j].substring(arrayScan[j].indexOf('line '),arrayScan[j].indexOf(')')).replace('line ','');
+            let nameFwTabs = arrayScan[j].split('FROM TABLE');
+            let tmpFwScanTables;
+            let tmpIndex;
+            let tmpIndexKeys;
+            for(k=0; k<nameFwTabs.length; k++){
+                if(nameFwTabs[k].indexOf('Forward Scan.')>=0){
                     l=0;
-                    while(arrayFW[k][l] === ' ' || arrayFW[k][l] === '|'){
+                    while(nameFwTabs[k][l] === ' ' || nameFwTabs[k][l] === '|'){
                         l++;
                     }
-                    if(arrayFW[k].indexOf('Clustered')>=0){
-                        var tempTab = arrayFW[k].substring(l,arrayFW[k].indexOf('Using')).replace(/\|/g,''); //Tabla
-                        var tempInd = arrayFW[k].substring(arrayFW[k].indexOf('Index :'),arrayFW[k].indexOf('Forward Scan.')).replace('Index : ','').replace(/\|/g,'');//index
-                        if(arrayFW[k].indexOf('Keys are:')>=0){
-                            var tempKey = arrayFW[k].substring(arrayFW[k].indexOf('Keys are:'),arrayFW[k].indexOf('Using I/O')).replace('Keys are:','').replace(/\|/g,'');//Llaves
+                    if(nameFwTabs[k].indexOf('Clustered')>=0){
+                        tmpFwScanTables = nameFwTabs[k].substring(l,nameFwTabs[k].indexOf('Using')).replace(/\|/g,'');
+                        tmpIndex = nameFwTabs[k].substring(nameFwTabs[k].indexOf('Index :'),nameFwTabs[k].indexOf('Forward Scan.')).replace('Index : ','').replace(/\|/g,'');
+                        if(nameFwTabs[k].indexOf('Keys are:')>=0){
+                            tmpIndexKeys = nameFwTabs[k].substring(nameFwTabs[k].indexOf('Keys are:'),nameFwTabs[k].indexOf('Using I/O')).replace('Keys are:','').replace(/\|/g,'');
                         }else{
-                            var tempKey = 'N/A';
+                            tmpIndexKeys = 'N/A';
                         }
 
-                        scanIndex.push([lineaFW,tempTab,tempInd,tempKey]);
+                        scanIndex.push([lineFwTab,tmpFwScanTables,tmpIndex,tmpIndexKeys]);
                     }
                     else{
-                        var tempTab = arrayFW[k].substring(l,arrayFW[k].indexOf('Index')).replace(/\|/g,'');
-                        var tempInd = arrayFW[k].substring(arrayFW[k].indexOf('Index :'),arrayFW[k].indexOf('Forward Scan.')).replace('Index : ','').replace(/\|/g,'');//index
-                        if(arrayFW[k].indexOf('Keys are:')>=0){
-                            var tempKey = arrayFW[k].substring(arrayFW[k].indexOf('Keys are:'),arrayFW[k].indexOf('Using I/O')).replace('Keys are:','').replace(/\|/g,'');//Llaves
+                        tmpFwScanTables = nameFwTabs[k].substring(l,nameFwTabs[k].indexOf('Index')).replace(/\|/g,'');
+                        tmpIndex = nameFwTabs[k].substring(nameFwTabs[k].indexOf('Index :'),nameFwTabs[k].indexOf('Forward Scan.')).replace('Index : ','').replace(/\|/g,'');
+                        if(nameFwTabs[k].indexOf('Keys are:')>=0){
+                            tmpIndexKeys = nameFwTabs[k].substring(nameFwTabs[k].indexOf('Keys are:'),nameFwTabs[k].indexOf('Using I/O')).replace('Keys are:','').replace(/\|/g,'');
                         }else{
-                            var tempKey = 'N/A';
+                            tmpIndexKeys = 'N/A';
                         }
-                        scanIndex.push([lineaFW,tempTab,tempInd,tempKey]);
+                        scanIndex.push([lineFwTab,tmpFwScanTables,tmpIndex,tmpIndexKeys]);
                     }
                 }
             }
         }
     }
-    if(scanTable == ''){
+    if(scanTable === null){
         scanTable = 'No scan';
     }
-// [Línea][I/O][Tabla Full scan][Tabla con indice][Indices]
+// [Line][I/O][Full scan Table][Index Table]
     for(i=0; i<costIO.length; i++){
-        var tempTscan = '';
-        var tempFscan = '';
-        var tempLinea = '<td class="text-info" id="linea">' + costIO[i][0] + '</td>';
-        var tempIOcos = parseInt(costIO[i][1],10);
-        var tempIOcosFormat;
-        var tempIONum;
+        let tempLinea = '<td class="text-info text-right align-content-center" id="linea">' + costIO[i][0] + '</td>';
+        let tmpIOCost = (parseInt(costIO[i][1],10)).toLocaleString('es-MX');
+        let tmpIOCostFormat;
+        let tmpTabScan = '';
+        let tmpFwScan = '';
+
 
         // Column filling for I/O cost
-        if (tempIOcos >= 1000000){
-            tempIOcosFormat = tempIOcos.toLocaleString('es-MX');
-            tempIONum= '<td class="text-danger">' + tempIOcosFormat + '</td>';
-        }else if (tempIOcos >= 500000 && tempIOcos < 1000000){
-            tempIOcosFormat = tempIOcos.toLocaleString('es-MX');
-            tempIONum = '<td class="text-warning">' + tempIOcosFormat + '</td>';
+        if (tmpIOCost >= 1000000){
+            tmpIOCostFormat = '<td class="text-danger text-center">' + tmpIOCost + '</td>';
+        }else if (tmpIOCost >= 500000 && tmpIOCost < 1000000){
+            tmpIOCostFormat = '<td class="text-warning text-right">' + tmpIOCost + '</td>';
         }else {
-            tempIOcosFormat = tempIOcos.toLocaleString('es-MX');
-            tempIONum = '<td>' + tempIOcosFormat + '</td>';
+            tmpIOCostFormat = '<td class="text-right">' + tmpIOCost + '</td>';
         }
         // Column filling for scanned tables.
         for(j=0; j<scanTable.length; j++){
             if (costIO[i][0] === scanTable[j][0]){
-                if (scanTable[j][1].indexOf('#')>=0){
-                    tempTscan = '<td>' + scanTable[j][1] + '</td>';
+                if (scanTable[j][1].indexOf('#')>=0){ //# is for tmp tables
+                    tmpTabScan = '<td>' + scanTable[j][1] + '</td>';
                 }else{
-                    tempTscan = '<td class="text-danger">' + scanTable[j][1] + '</td>';
+                    tmpTabScan = '<td class="text-danger text-center">' + scanTable[j][1] + '</td>';
                 }
             }
         }
         // Column filling for index scan.
         for(j=0; j<scanIndex.length; j++){
             if (costIO[i][0] === scanIndex[j][0]){
-                tempFscan	= '<td class="text-monospace" id="interCell">'
+                tmpFwScan	= '<td class="text-monospace" id="interCell">'
                             + '<p class="text-white-50 headers"><strong class="font-weight-bold text-white">Tabla:  </strong>' + scanIndex[j][1] + '</p>'
                             + '<p class="text-white-50 headers"><strong class="font-weight-bold text-white">Indice: </strong>' + scanIndex[j][2] + '</p>'
                             + '<p class="text-white-50 headers"><strong class="font-weight-bold text-white">Llaves: </strong>' + scanIndex[j][3] + '</p></td>';
             }
         }
-        colAssembly.push([tempLinea,tempIONum, tempTscan,tempFscan]);
+        colAssembly.push([tempLinea,tmpIOCostFormat, tmpTabScan,tmpFwScan]);
     }
-
+    //Creation of the table to be displayed
     for (i=0; i<colAssembly.length; i++){
 
-        colHeaders += '<tr>';
+        tableStructure += '<tr>';
 
         for (j=0; j<colAssembly[i].length; j++){
             if (colAssembly[i][j].indexOf('td')>=0){
-                colHeaders += colAssembly[i][j];
+                tableStructure += colAssembly[i][j];
             }else{
-                colHeaders += '<td></td>';
+                tableStructure += '<td></td>';
             }
         }
 
-        colHeaders += '</tr>'
+        tableStructure += '</tr>'
     }
-    document.getElementById('editor').value=ev.target.result;
-    document.getElementById('costeTotal').innerHTML = ' <h2 class="text-center">' + '<b>Costo total estimado: </b><br><small>' + sumIO.toLocaleString('es-MX') + '</small></h2>';
-    document.getElementById('tabla').innerHTML= colHeaders;
+    document.getElementById('showPlanVisor').value = ev.target.result;
+    document.getElementById('totalCost').innerHTML =   '<h2 class="text-center">' +
+                                                                    '<b>Costo total estimado: </b><br>' +
+                                                                        '<small>' +
+                                                                            sumIO.toLocaleString('es-MX') +
+                                                                        '</small>' +
+                                                                '</h2>';
+    document.getElementById('showPlanTable').innerHTML= tableStructure;
 }
 
 function downloadCSV(csv, filename) {

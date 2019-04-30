@@ -1,0 +1,266 @@
+{
+	"auto_complete":
+	{
+		"selected_items":
+		[
+			[
+				"ale",
+				"alert〔function〕"
+			],
+			[
+				"mysql_err",
+				"mysql_error"
+			],
+			[
+				"a",
+				"a\t<a>"
+			],
+			[
+				"dato",
+				"datosNuevos"
+			],
+			[
+				"arr",
+				"$arreglo〔variable〕"
+			],
+			[
+				"image",
+				"$imagen〔variable〕"
+			],
+			[
+				"ima",
+				"$imagen〔variable〕"
+			],
+			[
+				"b",
+				"br\t<br>"
+			],
+			[
+				"va",
+				"value\tAttr"
+			],
+			[
+				"cou",
+				"count〔function〕"
+			],
+			[
+				"_se",
+				"$_SESSION〔variable〕"
+			],
+			[
+				"_s",
+				"$_SESSION〔variable〕"
+			],
+			[
+				"sess",
+				"session_start〔function〕"
+			]
+		]
+	},
+	"buffers":
+	[
+	],
+	"build_system": "",
+	"build_system_choices":
+	[
+	],
+	"build_varint": "",
+	"command_palette":
+	{
+		"height": 490.0,
+		"last_filter": "Package Control: ",
+		"selected_items":
+		[
+			[
+				"Package Control: ",
+				"Package Control: Install Package"
+			],
+			[
+				"Package Control: insta",
+				"Package Control: Install Package"
+			],
+			[
+				"Package Control: in",
+				"Package Control: Install Package"
+			],
+			[
+				"Package Control: ins",
+				"Package Control: Install Package"
+			]
+		],
+		"width": 637.0
+	},
+	"console":
+	{
+		"height": 176.0,
+		"history":
+		[
+		]
+	},
+	"distraction_free":
+	{
+		"menu_visible": true,
+		"show_minimap": false,
+		"show_open_files": false,
+		"show_tabs": false,
+		"side_bar_visible": false,
+		"status_bar_visible": false
+	},
+	"file_history":
+	[
+		"/C/Users/yonki/Desktop/startbootstrap-business-casual-gh-pages/index.html",
+		"/C/Users/yonki/AppData/Roaming/Sublime Text 3/Packages/Themr/ThemrFavorites.sublime-settings",
+		"/C/Users/yonki/Desktop/startbootstrap-business-casual-gh-pages/scss/_global.scss",
+		"/C/Users/yonki/Desktop/startbootstrap-business-casual-gh-pages/scss/_bootstrap-overrides.scss",
+		"/C/Users/yonki/Downloads/Telegram Desktop/Coste de lectura (2).html",
+		"/C/Users/yonki/Desktop/Perceptron.jar",
+		"/C/Users/yonki/Desktop/Super6_Logo copy.png",
+		"/C/Users/yonki/Desktop/Adobe Acrobat DC Pro Crack/amtlib.dll",
+		"/C/xampp/htdocs/subcontratistas/styles.css",
+		"/C/xampp/htdocs/subcontratistas/consulta.php",
+		"/C/xampp/htdocs/subcontratistas/index.html",
+		"/C/xampp/htdocs/CarritoCompras/conexion.php",
+		"/C/Users/yonki/Desktop/modificarDatos.php",
+		"/C/Users/yonki/Desktop/eliminar.php",
+		"/C/Users/yonki/Desktop/scripts.js",
+		"/C/xampp/htdocs/CarritoCompras/js/scripts.js",
+		"/C/xampp/htdocs/CarritoCompras/css/estilos.css",
+		"/C/xampp/htdocs/CarritoCompras/compras/compras.php",
+		"/C/xampp/htdocs/VintageArt/Connections/tiendaonline.php",
+		"/C/xampp/htdocs/VintageArt/_mmServerScripts/mysql.php",
+		"/C/Users/yonki/Documents/NetBeansProjects/InterfazMDI/src/interfazmdi/help/mapa.jhm",
+		"/C/Users/yonki/Documents/NetBeansProjects/InterfazMDI/src/interfazmdi/help/indice.xml",
+		"/C/Users/yonki/Documents/NetBeansProjects/InterfazMDI/src/interfazmdi/help/help.hs",
+		"/C/Users/yonki/Documents/NetBeansProjects/InterfazMDI/src/interfazmdi/help/tablacontenidos.xml",
+		"/C/Users/yonki/Desktop/help.hs",
+		"/C/xampp/htdocs/VintageArt/tiendaonline.sql",
+		"/C/Users/yonki/Desktop/Escritorio/VintageArt/index.php",
+		"/C/Users/yonki/Documents/NetBeansProjects/InterfazMDI/src/interfazmdi/Escritorio.java",
+		"/C/Users/yonki/Documents/NetBeansProjects/InterfazMDI/src/images/Salir.png",
+		"/C/Users/yonki/Documents/NetBeansProjects/InterfazMDI/src/images/Abrir.png",
+		"/C/Users/yonki/Desktop/Prueba",
+		"/C/xampp/htdocs/Carrito/archivo.php",
+		"/C/xampp/htdocs/Carrito/index.html",
+		"/C/Users/yonki/Desktop/Carrito/Carrito.php"
+	],
+	"find":
+	{
+		"height": 36.0
+	},
+	"find_in_files":
+	{
+		"height": 0.0,
+		"where_history":
+		[
+		]
+	},
+	"find_state":
+	{
+		"case_sensitive": false,
+		"find_history":
+		[
+		],
+		"highlight": true,
+		"in_selection": false,
+		"preserve_case": false,
+		"regex": false,
+		"replace_history":
+		[
+		],
+		"reverse": false,
+		"show_context": true,
+		"use_buffer2": true,
+		"whole_word": false,
+		"wrap": true
+	},
+	"groups":
+	[
+		{
+			"sheets":
+			[
+			]
+		}
+	],
+	"incremental_find":
+	{
+		"height": 36.0
+	},
+	"input":
+	{
+		"height": 0.0
+	},
+	"layout":
+	{
+		"cells":
+		[
+			[
+				0,
+				0,
+				1,
+				1
+			]
+		],
+		"cols":
+		[
+			0.0,
+			1.0
+		],
+		"rows":
+		[
+			0.0,
+			1.0
+		]
+	},
+	"menu_visible": true,
+	"output.find_results":
+	{
+		"height": 0.0
+	},
+	"pinned_build_system": "Packages/Default/Syntax Tests.sublime-build",
+	"project": "index.sublime-project",
+	"replace":
+	{
+		"height": 68.0
+	},
+	"save_all_on_build": true,
+	"select_file":
+	{
+		"height": 0.0,
+		"last_filter": "",
+		"selected_items":
+		[
+		],
+		"width": 0.0
+	},
+	"select_project":
+	{
+		"height": 0.0,
+		"last_filter": "",
+		"selected_items":
+		[
+		],
+		"width": 0.0
+	},
+	"select_symbol":
+	{
+		"height": 0.0,
+		"last_filter": "",
+		"selected_items":
+		[
+		],
+		"width": 0.0
+	},
+	"selected_group": 0,
+	"settings":
+	{
+	},
+	"show_minimap": true,
+	"show_open_files": true,
+	"show_tabs": true,
+	"side_bar_visible": true,
+	"side_bar_width": 341.0,
+	"status_bar_visible": true,
+	"template_settings":
+	{
+	}
+}

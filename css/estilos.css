@@ -30,3 +30,7 @@ a:hover {
     background: #1b1e21;
     color: #e2e6ea;
 }
+
+.headers {
+    margin: 3px 0 3px 0;
+}

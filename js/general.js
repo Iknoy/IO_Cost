@@ -3,18 +3,18 @@ window.addEventListener('load', inicio, false);
 var filename = '';
 
 function inicio() {
-    document.getElementById('showPlan').addEventListener('change', cargar, false);
+    document.getElementById('showPlan').addEventListener('change', loadFile, false);
     document.getElementById('table_dis').style.display = 'none';
     document.getElementById('editor').style.display = 'none';
 }
 
-function cargar(ev) {
+function loadFile(ev) {
     filename = ev.target.files[0].name;
-    document.getElementById('datosArchivo').innerHTML	='Nombre del archivo: '+filename+'<br>'
-        +'Tama\u00F1o del archivo: '+ev.target.files[0].size+' bytes';
+    document.getElementById('dataFile').innerHTML	= 'Nombre del archivo: '+filename+'<br>'
+                                                            + 'Tama\u00F1o del archivo: '+ev.target.files[0].size+' bytes';
 
-    var arch = new FileReader();
-    arch.addEventListener('load',leer,false);
+    let arch = new FileReader();
+    arch.addEventListener('load',readFile,false);
     arch.readAsText(ev.target.files[0]);
 
     document.getElementById('info_dis').style.display = 'none';
@@ -22,31 +22,36 @@ function cargar(ev) {
     document.getElementById('editor').style.display = 'block';
 }
 
-function leer(ev) {
-    var array =  ev.target.result.split("): ");
-    var arrayScan =  ev.target.result.split("QUERY PLAN FOR STATEMENT ");
-    var arrayIos = ev.target.result.split("Total estimated I/O cost for");
-    var i;
-    var j;
-    var k;
-    var l = 0;
-    var suma = 0;
-    var scan = [];		// [Línea][Tabla]
-    var fscan = [];		// [Línea][Tabla][Indices]
-    var ios = [];		// [Línea][I/O]
-    var resulset = [];	// [Línea][I/O][Tabla Full scan][Tabla con indice][Indices]
-    var table = '<tr class="text-center naranjaBR" ><th>L\u00EDnea dentro del SP </th><th>Coste de I/O Estimado </th><th>Tablas Escaneadas</th><th>Escaneos con \u00EDndices</th></tr>';
+function readFile(ev) {
+    const array = ev.target.result.split("): ");
+    const arrayScan = ev.target.result.split("QUERY PLAN FOR STATEMENT ");
+    const arrayIos = ev.target.result.split("Total estimated I/O cost for");
+    let i, j, k;
+    let l = 0;
+    let scanTable = [];		// [Línea][Tabla]
+    let scanIndex = [];		// [Línea][Tabla][Indices]
+    let costIO = [];		// [Línea][I/O]
+    let colAssembly = [];	// [Línea][I/O][Tabla Full scan][Tabla con indice][Indices]
+    let colHeaders   = '<tr class="text-center naranjaBR" >' +
+                        '<th>L\u00EDnea dentro del SP </th>' +
+                        '<th>Coste de I/O Estimado </th>' +
+                        '<th>Tablas Escaneadas</th>' +
+                        '<th>Escaneos con \u00EDndices</th></tr>';
 
+    let statement;
+    let sumIO = 0;
+
+    //Sum of I/O Cost
     for(i=0; i<array.length; i++){
-        suma+=isNaN(parseInt(array[i]))?0:parseInt(array[i]);
+        sumIO += isNaN(parseInt(array[i]))?0:parseInt(array[i]);
     }
-    //Identificación de la cantidad de I/O
+    //I/O quantity per block
     for(k=1; k<arrayIos.length; k++){
-        var aplica = arrayIos[k].substring(arrayIos[k].indexOf('):'),arrayIos[k].indexOf('.')).replace('): ','')
-        if (parseInt(aplica)>0){
+        statement = arrayIos[k].substring(arrayIos[k].indexOf('):'), arrayIos[k].indexOf('.')).replace('): ', '');
+        if (parseInt(statement)>0){
             var tempLine = arrayIos[k].substring(arrayIos[k].indexOf('at line'),arrayIos[k].indexOf('):')).replace('at line ','');
             var tempIO = arrayIos[k].substring(arrayIos[k].indexOf('):'),arrayIos[k].indexOf('.')).replace('): ','');
-            ios.push([tempLine,tempIO]);
+            costIO.push([tempLine,tempIO]);
         }
     }
     //Identificación de Tabla
@@ -62,7 +67,7 @@ function leer(ev) {
                         l++;
                     }
                     var tempScan = arrayAux[k].substring(l,arrayAux[k].indexOf('Table Scan.')).replace(/\|/g,'');
-                    scan.push([linea, tempScan]);
+                    scanTable.push([linea, tempScan]);
                 }
             }
         }
@@ -85,7 +90,7 @@ function leer(ev) {
                             var tempKey = 'N/A';
                         }
 
-                        fscan.push([lineaFW,tempTab,tempInd,tempKey]);
+                        scanIndex.push([lineaFW,tempTab,tempInd,tempKey]);
                     }
                     else{
                         var tempTab = arrayFW[k].substring(l,arrayFW[k].indexOf('Index')).replace(/\|/g,'');
@@ -95,24 +100,25 @@ function leer(ev) {
                         }else{
                             var tempKey = 'N/A';
                         }
-                        fscan.push([lineaFW,tempTab,tempInd,tempKey]);
+                        scanIndex.push([lineaFW,tempTab,tempInd,tempKey]);
                     }
                 }
             }
         }
     }
-    if(scan===''){
-        scan = 'No scan';
+    if(scanTable == ''){
+        scanTable = 'No scan';
     }
 // [Línea][I/O][Tabla Full scan][Tabla con indice][Indices]
-    for(i=0; i<ios.length; i++){
+    for(i=0; i<costIO.length; i++){
         var tempTscan = '';
         var tempFscan = '';
-        var tempLinea = '<td class="text-info" id="linea">' + ios[i][0] + '</td>';
-        var tempIOcos = parseInt(ios[i][1],10);
+        var tempLinea = '<td class="text-info" id="linea">' + costIO[i][0] + '</td>';
+        var tempIOcos = parseInt(costIO[i][1],10);
         var tempIOcosFormat;
         var tempIONum;
 
+        // Column filling for I/O cost
         if (tempIOcos >= 1000000){
             tempIOcosFormat = tempIOcos.toLocaleString('es-MX');
             tempIONum= '<td class="text-danger">' + tempIOcosFormat + '</td>';
@@ -123,48 +129,50 @@ function leer(ev) {
             tempIOcosFormat = tempIOcos.toLocaleString('es-MX');
             tempIONum = '<td>' + tempIOcosFormat + '</td>';
         }
-
-        for(j=0; j<scan.length; j++){
-            if (ios[i][0] === scan[j][0]){
-                if (scan[j][1].indexOf('#')>=0){
-                    tempTscan = '<td>' + scan[j][1] + '</td>';
+        // Column filling for scanned tables.
+        for(j=0; j<scanTable.length; j++){
+            if (costIO[i][0] === scanTable[j][0]){
+                if (scanTable[j][1].indexOf('#')>=0){
+                    tempTscan = '<td>' + scanTable[j][1] + '</td>';
                 }else{
-                    tempTscan = '<td class="text-danger">' + scan[j][1] + '</td>';
+                    tempTscan = '<td class="text-danger">' + scanTable[j][1] + '</td>';
                 }
             }
         }
-        for(j=0; j<fscan.length; j++){
-            if (ios[i][0] === fscan[j][0]){
-                tempFscan	= '<td class="text-monospace" id="interCell"><p class="font-weight-bold">Tabla: </p><p class="text-white-50">' + fscan[j][1]
-                    + '</p><p class="font-weight-bold">Indice: </p><p class="text-white-50">' + fscan[j][2]
-                    + '</p><p class="font-weight-bold">Llaves: </p><p class="text-white-50">' + fscan[j][3] + '</p></td>';
+        // Column filling for index scan.
+        for(j=0; j<scanIndex.length; j++){
+            if (costIO[i][0] === scanIndex[j][0]){
+                tempFscan	= '<td class="text-monospace" id="interCell">'
+                            + '<p class="text-white-50 headers"><strong class="font-weight-bold text-white">Tabla:  </strong>' + scanIndex[j][1] + '</p>'
+                            + '<p class="text-white-50 headers"><strong class="font-weight-bold text-white">Indice: </strong>' + scanIndex[j][2] + '</p>'
+                            + '<p class="text-white-50 headers"><strong class="font-weight-bold text-white">Llaves: </strong>' + scanIndex[j][3] + '</p></td>';
             }
         }
-        resulset.push([tempLinea,tempIONum, tempTscan,tempFscan]);
+        colAssembly.push([tempLinea,tempIONum, tempTscan,tempFscan]);
     }
 
-    for (i=0; i<resulset.length; i++){
+    for (i=0; i<colAssembly.length; i++){
 
-        table += '<tr>';
+        colHeaders += '<tr>';
 
-        for (j=0; j<resulset[i].length; j++){
-            if (resulset[i][j].indexOf('td')>=0){
-                table += resulset[i][j];
+        for (j=0; j<colAssembly[i].length; j++){
+            if (colAssembly[i][j].indexOf('td')>=0){
+                colHeaders += colAssembly[i][j];
             }else{
-                table += '<td></td>';
+                colHeaders += '<td></td>';
             }
         }
 
-        table += '</tr>'
+        colHeaders += '</tr>'
     }
     document.getElementById('editor').value=ev.target.result;
-    document.getElementById('costeTotal').innerHTML = ' <h2 class="text-center">' + '<b>Costo total estimado: </b><br><small>' + suma.toLocaleString('es-MX') + '</small></h2>';
-    document.getElementById('tabla').innerHTML= table;
+    document.getElementById('costeTotal').innerHTML = ' <h2 class="text-center">' + '<b>Costo total estimado: </b><br><small>' + sumIO.toLocaleString('es-MX') + '</small></h2>';
+    document.getElementById('tabla').innerHTML= colHeaders;
 }
 
 function downloadCSV(csv, filename) {
-    var csvFile;
-    var downloadLink;
+    let csvFile;
+    let downloadLink;
 
     // CSV file
     csvFile = new Blob([csv], {type: "text/csv"});
@@ -189,19 +197,23 @@ function downloadCSV(csv, filename) {
 }
 
 function exportTableToCSV() {
-    var csv = [];
-    var salida = 'I/O_Cost_'+filename;
-    var rows = document.querySelectorAll("table tr");
+    let i, j;
+    let csv = [];
+    let output = 'I/O_Cost_' + filename;
+    let rows = document.querySelectorAll("table tr");
+    let row, cols;
 
-    for (var i = 0; i < rows.length; i++) {
-        var row = [], cols = rows[i].querySelectorAll("td, th");
+    for (i = 0; i < rows.length; i++) {
+        row = [];
+        cols = rows[i].querySelectorAll("td, th");
 
-        for (var j = 0; j < cols.length; j++)
-            row.push('"'+cols[j].innerText+'"');
+        for (j = 0; j < cols.length; j++){
+            row.push('"' + cols[j].innerText + '"');
+        }
 
         csv.push(row.join(","));
     }
 
     // Download CSV file
-    downloadCSV(csv.join("\n"), salida);
+    downloadCSV(csv.join("\n"), output);
 }

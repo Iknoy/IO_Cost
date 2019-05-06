@@ -113,20 +113,19 @@ function readFile(ev) {
     }
 // [Line][I/O][Full scan Table][Index Table]
     for(i=0; i<costIO.length; i++){
-        let tempLinea = '<td class="text-info text-right align-content-center" id="linea">' + costIO[i][0] + '</td>';
-        let tmpIOCost = (parseInt(costIO[i][1],10)).toLocaleString('es-MX');
+        let tempLinea = '<td class="text-info text-center align-middle" id="linea">' + costIO[i][0] + '</td>';
+        let tmpIOCost = parseInt(costIO[i][1],10);
         let tmpIOCostFormat;
         let tmpTabScan = '';
         let tmpFwScan = '';
 
-
         // Column filling for I/O cost
         if (tmpIOCost >= 1000000){
-            tmpIOCostFormat = '<td class="text-danger text-center">' + tmpIOCost + '</td>';
+            tmpIOCostFormat = '<td class="text-danger text-center align-middle">' + tmpIOCost.toLocaleString('es-MX') + '</td>';
         }else if (tmpIOCost >= 500000 && tmpIOCost < 1000000){
-            tmpIOCostFormat = '<td class="text-warning text-right">' + tmpIOCost + '</td>';
+            tmpIOCostFormat = '<td class="text-warning text-right align-middle">' + tmpIOCost.toLocaleString('es-MX') + '</td>';
         }else {
-            tmpIOCostFormat = '<td class="text-right">' + tmpIOCost + '</td>';
+            tmpIOCostFormat = '<td class="text-right align-middle">' + tmpIOCost.toLocaleString('es-MX') + '</td>';
         }
         // Column filling for scanned tables.
         for(j=0; j<scanTable.length; j++){

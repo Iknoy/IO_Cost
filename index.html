@@ -4,7 +4,7 @@
     <!--    <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />-->
     <meta name="viewport" content="user-scalable=no, width=device-width, initial-scale=1">
     <title>IO Cost</title>
-    <link rel="shortcut icon" href="img/wink.ico" />
+    <link rel="shortcut icon" href="img/wink.png" />
     <link rel="stylesheet" type="text/css" href="css/estilos.css">
     <link rel="stylesheet" href="css/bootstrap.min.css">
 </head>
@@ -35,7 +35,8 @@
     <div class="row">
         <div class="col-sm-12 col-md-8 col-lg-9">
             <div class="table-responsive">
-                <table class="table table-sm table-bordered table-striped table-dark table-hover" id = "showPlanTable" >
+                <table class="table table-sm table-bordered table-striped table-dark
+" id = "showPlanTable" >
                 </table>
             </div>
             <div id="table_dis">
@@ -81,25 +82,43 @@
                     I/O cost:
                 </h3>
                 <p>
-                    In/Out (Entrada/Salida) Se refiere a los datos desde o hacía los discos y/u otros periféricos, es probablemente de los recursos más lentos. El «Costo Estimado de I/O» se encarga de recopilar los costes por parte de diferentes procesos que se aquí mismo se especificarán.
+                    In/Out (Entrada/Salida) Se refiere a los datos desde o hacía los discos y/u otros periféricos, es probablemente de los recursos más lentos. El «Costo Estimado de I/O» se encarga de recopilar los costes por parte de diferentes procesos que aquí mismo se especificarán.
+                </p>
+                <h3>
+                    Index Scan:
+                </h3>
+                <p>
+                    El operador Clustered Index Scan examina el índice clúster especificado en la columna Argument del plan de ejecución de consulta. Si hay un predicado WHERE:(), sólo se devuelven las filas que lo cumplen. Si la columna Argument contiene la cláusula ORDERED, el procesador de consultas ha solicitado que la salida de las filas se devuelva en el orden en que las haya ordenado el índice clúster. Si no hay una cláusula ORDERED, el motor de almacenamiento recorre el índice de la forma óptima (sin tener que ordenar el resultado).
+                    <br>
+                    Clustered Index Scan es un operador lógico y físico.
+                    <br>
+                    Icono de plan de ejecución gráfico
                 </p>
                 <h3>
                     Table Scan:
                 </h3>
                 <p>
-                    El número total de páginas de datos en la tabla; si el proceso indica esta etiqueta significa que recorrerá toda la tabla para encontrar el elemento requerido en el proceso.
+                    El operador Table Scan recupera todas las filas de la tabla especificada en la columna Argument del plan de ejecución de consultas. Si hay un predicado WHERE:() en la columna Argument, sólo se devuelven las filas que cumplan el predicado.
+                    <br>
+                    Table Scan es un operador lógico y físico.
+                    <br>
+                    Icono de plan de ejecución gráfico
                 </p>
                 <h3>
                     Clustered Index Scan:
                 </h3>
                 <p>
-                    El número de niveles en el índice más el número de páginas de datos a escanear
+                    Un índice agrupado define el orden en el cual los datos son físicamente almacenados en una tabla. Los datos de las tablas pueden ser ordenados sólo en una forma, por lo tanto, sólo puede haber un índice agrupado por tabla.
                 </p>
                 <h3>
                     Non-Clustered index:
                 </h3>
             <p>
-                Pendiente.
+                Un índice no agrupado no ordena los datos físicos dentro de la tabla. De hecho, un índice no agrupado es agrupado en un solo lugar y los datos de la tabla son almacenados en otro lugar. Esto es similar a un libro de texto donde el contenido del libro está localizado en un lugar y el índice está localizado en otro. Esto permite tener más de un índice no agrupado por tabla.
+                <br>
+                Es importante mencionar que dentro de la tabla los datos serán ordenados por un índice agrupado. De todos modos, por dentro los datos del índice no agrupado son almacenados en un orden específico. El índice contiene valores de columna en los cuales el índice es creado y la dirección del registro a la que el valor de la columna pertenece.
+                <br>
+                Cuando una consulta es lanzada contra una columna en la cual el índice es creado, la base de datos primero irá al índice y buscará la dirección de la fila correspondiente en la tabla. Luego, irá a esa dirección de fila y obtendrá otros valores de columna. Es debido a este paso adicional que los índices no agrupados son más lentos que los índices agrupados.
             </p>
         </div>
     </div>

@@ -60,65 +60,65 @@
             </h2>
             <ul class="text-justify">
                 <li>
-                    Antes de la ejecución de cualquier proceso ejecutar la instrucción: <pre class="text-white-50">set showplan on</pre>
+                    Antes de la ejecuciï¿½n de cualquier proceso ejecutar la instrucciï¿½n: <pre class="text-white-50">set showplan on</pre>
                 </li>
                 <li>
-                    También debera de estar activado el panel «Show Log», si no esta activado o no se ve, utilizar <code>Alt+2</code>
+                    Tambiï¿½n debera de estar activado el panel ï¿½Show Logï¿½, si no esta activado o no se ve, utilizar <code>Alt+2</code>
                 </li>
                 <li>
-                    Copiar todo lo mostrado en el «Show Log» seleccionando con click derecho y select all
+                    Copiar todo lo mostrado en el ï¿½Show Logï¿½ seleccionando con click derecho y select all
                 </li>
                 <li>
-                    Guardar el texto copiado en un archivo «txt», ese archivo es el que se debe de cargar.
+                    Guardar el texto copiado en un archivo ï¿½txtï¿½, ese archivo es el que se debe de cargar.
                 </li>
             </ul>
         </div>
         <div class="significado border border-light rounded col-sm-12 col-md-6 col-lg-6">
             <h2 class="text-center">
-                Glosario de términos.
+                Glosario de tï¿½rminos.
             </h2>
             <p class="text-justify">
                 <h3>
                     I/O cost:
                 </h3>
                 <p>
-                    In/Out (Entrada/Salida) Se refiere a los datos desde o hacía los discos y/u otros periféricos, es probablemente de los recursos más lentos. El «Costo Estimado de I/O» se encarga de recopilar los costes por parte de diferentes procesos que aquí mismo se especificarán.
+                    In/Out (Entrada/Salida) Se refiere a los datos desde o hacï¿½a los discos y/u otros perifï¿½ricos, es probablemente de los recursos mï¿½s lentos. El ï¿½Costo Estimado de I/Oï¿½ se encarga de recopilar los costes por parte de diferentes procesos que aquï¿½ mismo se especificarï¿½n.
                 </p>
                 <h3>
                     Index Scan:
                 </h3>
                 <p>
-                    El operador Clustered Index Scan examina el índice clúster especificado en la columna Argument del plan de ejecución de consulta. Si hay un predicado WHERE:(), sólo se devuelven las filas que lo cumplen. Si la columna Argument contiene la cláusula ORDERED, el procesador de consultas ha solicitado que la salida de las filas se devuelva en el orden en que las haya ordenado el índice clúster. Si no hay una cláusula ORDERED, el motor de almacenamiento recorre el índice de la forma óptima (sin tener que ordenar el resultado).
+                    El operador Clustered Index Scan examina el ï¿½ndice clï¿½ster especificado en la columna Argument del plan de ejecuciï¿½n de consulta. Si hay un predicado WHERE:(), sï¿½lo se devuelven las filas que lo cumplen. Si la columna Argument contiene la clï¿½usula ORDERED, el procesador de consultas ha solicitado que la salida de las filas se devuelva en el orden en que las haya ordenado el ï¿½ndice clï¿½ster. Si no hay una clï¿½usula ORDERED, el motor de almacenamiento recorre el ï¿½ndice de la forma ï¿½ptima (sin tener que ordenar el resultado).
                     <br>
-                    Clustered Index Scan es un operador lógico y físico.
+                    Clustered Index Scan es un operador lï¿½gico y fï¿½sico.
                     <br>
-                    Icono de plan de ejecución gráfico
+                    Icono de plan de ejecuciï¿½n grï¿½fico
                 </p>
                 <h3>
                     Table Scan:
                 </h3>
                 <p>
-                    El operador Table Scan recupera todas las filas de la tabla especificada en la columna Argument del plan de ejecución de consultas. Si hay un predicado WHERE:() en la columna Argument, sólo se devuelven las filas que cumplan el predicado.
+                    El operador Table Scan recupera todas las filas de la tabla especificada en la columna Argument del plan de ejecuciï¿½n de consultas. Si hay un predicado WHERE:() en la columna Argument, sï¿½lo se devuelven las filas que cumplan el predicado.
                     <br>
-                    Table Scan es un operador lógico y físico.
+                    Table Scan es un operador lï¿½gico y fï¿½sico.
                     <br>
-                    Icono de plan de ejecución gráfico
+                    Icono de plan de ejecuciï¿½n grï¿½fico
                 </p>
                 <h3>
                     Clustered Index Scan:
                 </h3>
                 <p>
-                    Un índice agrupado define el orden en el cual los datos son físicamente almacenados en una tabla. Los datos de las tablas pueden ser ordenados sólo en una forma, por lo tanto, sólo puede haber un índice agrupado por tabla.
+                    Un ï¿½ndice agrupado define el orden en el cual los datos son fï¿½sicamente almacenados en una tabla. Los datos de las tablas pueden ser ordenados sï¿½lo en una forma, por lo tanto, sï¿½lo puede haber un ï¿½ndice agrupado por tabla.
                 </p>
                 <h3>
                     Non-Clustered index:
                 </h3>
             <p>
-                Un índice no agrupado no ordena los datos físicos dentro de la tabla. De hecho, un índice no agrupado es agrupado en un solo lugar y los datos de la tabla son almacenados en otro lugar. Esto es similar a un libro de texto donde el contenido del libro está localizado en un lugar y el índice está localizado en otro. Esto permite tener más de un índice no agrupado por tabla.
+                Un ï¿½ndice no agrupado no ordena los datos fï¿½sicos dentro de la tabla. De hecho, un ï¿½ndice no agrupado es agrupado en un solo lugar y los datos de la tabla son almacenados en otro lugar. Esto es similar a un libro de texto donde el contenido del libro estï¿½ localizado en un lugar y el ï¿½ndice estï¿½ localizado en otro. Esto permite tener mï¿½s de un ï¿½ndice no agrupado por tabla.
                 <br>
-                Es importante mencionar que dentro de la tabla los datos serán ordenados por un índice agrupado. De todos modos, por dentro los datos del índice no agrupado son almacenados en un orden específico. El índice contiene valores de columna en los cuales el índice es creado y la dirección del registro a la que el valor de la columna pertenece.
+                Es importante mencionar que dentro de la tabla los datos serï¿½n ordenados por un ï¿½ndice agrupado. De todos modos, por dentro los datos del ï¿½ndice no agrupado son almacenados en un orden especï¿½fico. El ï¿½ndice contiene valores de columna en los cuales el ï¿½ndice es creado y la direcciï¿½n del registro a la que el valor de la columna pertenece.
                 <br>
-                Cuando una consulta es lanzada contra una columna en la cual el índice es creado, la base de datos primero irá al índice y buscará la dirección de la fila correspondiente en la tabla. Luego, irá a esa dirección de fila y obtendrá otros valores de columna. Es debido a este paso adicional que los índices no agrupados son más lentos que los índices agrupados.
+                Cuando una consulta es lanzada contra una columna en la cual el ï¿½ndice es creado, la base de datos primero irï¿½ al ï¿½ndice y buscarï¿½ la direcciï¿½n de la fila correspondiente en la tabla. Luego, irï¿½ a esa direcciï¿½n de fila y obtendrï¿½ otros valores de columna. Es debido a este paso adicional que los ï¿½ndices no agrupados son mï¿½s lentos que los ï¿½ndices agrupados.
             </p>
         </div>
     </div>
@@ -136,12 +136,12 @@
             </small>
             <br>
             <small>
-                Jonathan Nicio  Ext. 3360
+                Jonathan Nicio
             </small>
             <br>
-            <a href="mailto:jonathan.nicio@banregio.com">
+            <a href="mailto:jNicioN@gmail.com">
                 <small>
-                    jonathan.nicio@banregio.com
+                    jNicioN@gmail.com
                 </small>
             </a>
         </p>
